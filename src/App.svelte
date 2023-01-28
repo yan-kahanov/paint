@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  import Figures from "./components/Figures.svelte";
 
   let canvasScreenshot;
 
@@ -14,14 +15,6 @@
   const pos = { x: 0, y: 0 };
   let canvas = null;
   let ctx;
-
-  const figures = [
-    { value: "pen", title: "Карандаш" },
-    { value: "line", title: "Линия" },
-    { value: "rect", title: "Прямоугльник" },
-    { value: "ellipse", title: "Овал" },
-    { value: "triangle", title: "Треугольник" },
-  ];
 
   onMount(() => {
     ctx = canvas.getContext("2d");
@@ -128,17 +121,7 @@
         <label for="fillToggle">С заливкой</label>
       </div>
     </div>
-    <div>
-      {#each figures as figure}
-        <button
-          class="figure"
-          class:active={settings.figure === figure.value}
-          on:click={() => changeFigure(figure.value)}
-        >
-          {figure.title}
-        </button>
-      {/each}
-    </div>
+    <Figures changeFigure={changeFigure} activeFigure={settings.figure}/>
   </div>
   <canvas
     bind:this={canvas}
@@ -157,10 +140,6 @@
   .color-picker {
     padding: 0;
     cursor: pointer;
-  }
-  .figure.active {
-    background-color: gray;
-    color: #fff;
   }
   .fill-toggle {
     display: flex;
