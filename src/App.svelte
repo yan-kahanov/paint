@@ -51,35 +51,28 @@
     ctx.strokeStyle = settings.strokeColor;
     ctx.fillStyle = settings.fillColor;
 
+    if (settings.figure !== "pen") {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (canvasScreenshot) ctx.putImageData(canvasScreenshot, 0, 0);
+    }
+
     switch (settings.figure) {
       case "pen":
         ctx.moveTo(pos.x, pos.y);
         setPosition(e);
         ctx.lineTo(pos.x, pos.y);
-        ctx.stroke();
         break;
       case "line":
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        if (canvasScreenshot) ctx.putImageData(canvasScreenshot, 0, 0);
-
         ctx.moveTo(pos.x, pos.y);
         ctx.lineTo(e.offsetX, e.offsetY);
-        ctx.stroke();
         break;
       case "rect":
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        if (canvasScreenshot) ctx.putImageData(canvasScreenshot, 0, 0);
-
         if (settings.isFill) {
           ctx.fillRect(pos.x, pos.y, e.offsetX - pos.x, e.offsetY - pos.y);
         }
         ctx.rect(pos.x, pos.y, e.offsetX - pos.x, e.offsetY - pos.y);
-        ctx.stroke();
         break;
       case "ellipse":
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        if (canvasScreenshot) ctx.putImageData(canvasScreenshot, 0, 0);
-
         const width = Math.abs(e.offsetX - pos.x);
         const height = Math.abs(e.offsetY - pos.y);
         ctx.save();
@@ -90,25 +83,21 @@
         if (settings.isFill) {
           ctx.fill();
         }
-        ctx.stroke();
         break;
       case "triangle":
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        if (canvasScreenshot) ctx.putImageData(canvasScreenshot, 0, 0);
-
         ctx.moveTo(pos.x, pos.y);
-        ctx.lineTo(e.offsetX, e.offsetY)
-        ctx.lineTo(pos.x - (e.offsetX - pos.x), e.offsetY)
+        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.lineTo(pos.x - (e.offsetX - pos.x), e.offsetY);
         if (settings.isFill) {
           ctx.fill();
         }
         ctx.closePath();
 
-        ctx.stroke();
         break;
       default:
         break;
     }
+    ctx.stroke();
   }
 
   const changeFigure = (figure) => {
