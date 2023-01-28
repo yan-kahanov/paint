@@ -7,7 +7,7 @@
     lineWidth: null,
     strokeColor: "#000000",
     fillColor: "#ffffff",
-    figure: "triangle",
+    figure: "pen",
     isFill: false,
   };
 
@@ -29,8 +29,8 @@
   });
 
   function resize() {
-    ctx.canvas.width = window.innerWidth - 100;
-    ctx.canvas.height = window.innerHeight - 200;
+    ctx.canvas.width = window.innerWidth - 15;
+    ctx.canvas.height = window.innerHeight - 100;
   }
 
   function setPosition(e) {
@@ -164,8 +164,6 @@
 <style>
   canvas {
     border: 1px solid gray;
-    width: 100%;
-    height: calc(100vh - 100px);
   }
   .color-picker {
     padding: 0;
