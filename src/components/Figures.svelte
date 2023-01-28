@@ -24,6 +24,9 @@
 </div>
 
 <style>
+  .figure{
+    user-select: none;
+  }
   .figure.active {
     background-color: gray;
     color: #fff;

@@ -12,7 +12,7 @@
     isFill: false,
   };
 
-  const pos = { x: 0, y: 0 };
+  const startPos = { x: 0, y: 0 };
   let canvas = null;
   let ctx;
 
@@ -27,8 +27,8 @@
   }
 
   function setPosition(e) {
-    pos.x = e.offsetX;
-    pos.y = e.offsetY;
+    startPos.x = e.clientX - canvas.offsetLeft;
+    startPos.y = e.clientY - canvas.offsetTop;
   }
 
   const setCanvasScreenshot = () => {
@@ -36,7 +36,9 @@
   };
 
   function draw(e) {
-    if (e.buttons !== 1) return;
+    if (e.buttons !== 1 || startPos.x < 0 || startPos.y < 0) return;
+    const currPosX = e.clientX - canvas.offsetLeft - 1;
+    const currPosY = e.clientY - canvas.offsetTop - 1;
 
     ctx.beginPath();
     ctx.lineWidth = settings.lineWidth ?? 5;
@@ -51,25 +53,35 @@
 
     switch (settings.figure) {
       case "pen":
-        ctx.moveTo(pos.x, pos.y);
+        ctx.moveTo(startPos.x, startPos.y);
         setPosition(e);
-        ctx.lineTo(pos.x, pos.y);
+        ctx.lineTo(startPos.x, startPos.y);
         break;
       case "line":
-        ctx.moveTo(pos.x, pos.y);
-        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.moveTo(startPos.x, startPos.y);
+        ctx.lineTo(currPosX, currPosY);
         break;
       case "rect":
         if (settings.isFill) {
-          ctx.fillRect(pos.x, pos.y, e.offsetX - pos.x, e.offsetY - pos.y);
+          ctx.fillRect(
+            startPos.x,
+            startPos.y,
+            currPosX - startPos.x,
+            currPosY - startPos.y
+          );
         }
-        ctx.rect(pos.x, pos.y, e.offsetX - pos.x, e.offsetY - pos.y);
+        ctx.rect(
+          startPos.x,
+          startPos.y,
+          currPosX - startPos.x,
+          currPosY - startPos.y
+        );
         break;
       case "ellipse":
-        const width = Math.abs(e.offsetX - pos.x);
-        const height = Math.abs(e.offsetY - pos.y);
+        const width = Math.abs(currPosX - startPos.x);
+        const height = Math.abs(currPosY - startPos.y);
         ctx.save();
-        ctx.translate(pos.x, pos.y);
+        ctx.translate(startPos.x, startPos.y);
         ctx.scale(1, height / width);
         ctx.arc(0, 0, width, 0, Math.PI * 2);
         ctx.restore();
@@ -78,9 +90,9 @@
         }
         break;
       case "triangle":
-        ctx.moveTo(pos.x, pos.y);
-        ctx.lineTo(e.offsetX, e.offsetY);
-        ctx.lineTo(pos.x - (e.offsetX - pos.x), e.offsetY);
+        ctx.moveTo(startPos.x, startPos.y);
+        ctx.lineTo(currPosX, currPosY);
+        ctx.lineTo(startPos.x - (currPosX - startPos.x), currPosY);
         if (settings.isFill) {
           ctx.fill();
         }
@@ -102,6 +114,7 @@
   <div>
     <div class="panel-top">
       <input
+        class="input-line-width"
         bind:value={settings.lineWidth}
         type="number"
         placeholder="Толщина (px)"
@@ -121,17 +134,16 @@
         <label for="fillToggle">С заливкой</label>
       </div>
     </div>
-    <Figures changeFigure={changeFigure} activeFigure={settings.figure}/>
+    <Figures {changeFigure} activeFigure={settings.figure} />
   </div>
-  <canvas
-    bind:this={canvas}
-    on:mousedown={setPosition}
-    on:mouseup={setCanvasScreenshot}
-    on:mouseenter={setPosition}
-    on:mousemove={draw}
-    on:resize={resize}
-  />
+  <canvas bind:this={canvas} on:resize={resize} />
 </main>
+
+<svelte:window
+  on:mouseup={setCanvasScreenshot}
+  on:mousemove={draw}
+  on:mousedown={setPosition}
+/>
 
 <style>
   canvas {
@@ -157,5 +169,8 @@
     align-items: center;
     gap: 5px;
     margin-bottom: 10px;
+  }
+  .input-line-width {
+    user-select: none;
   }
 </style>
