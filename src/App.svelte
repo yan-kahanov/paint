@@ -1,6 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import Figures from "./components/Figures.svelte";
+  import Toolbar from "./components/Toolbar.svelte";
 
   let canvasScreenshot;
 
@@ -19,11 +20,14 @@
   onMount(() => {
     ctx = canvas.getContext("2d");
     resize();
+    
+    ctx.fillStyle = '#FFFFFF'
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   });
 
   function resize() {
-    ctx.canvas.width = window.innerWidth - 15;
-    ctx.canvas.height = window.innerHeight - 100;
+    ctx.canvas.width = window.innerWidth - canvas.offsetLeft - 10;
+    ctx.canvas.height = window.innerHeight - canvas.offsetTop - 10;
   }
 
   function setPosition(e) {
@@ -112,6 +116,7 @@
 
 <main>
   <div>
+    <Toolbar {ctx} {canvas} setCanvasScreenshot={setCanvasScreenshot}/>
     <div class="panel-top">
       <input
         class="input-line-width"
