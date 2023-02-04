@@ -11,13 +11,14 @@
 
   onMount(() => {
     ctx = canvas.getContext("2d");
-    resize();
+    resize()
 
     ctx.fillStyle = "#FFFFFF";
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   });
 
   function resize() {
+    if(!ctx) return;
     ctx.canvas.width = window.innerWidth - canvas.offsetLeft - 10;
     ctx.canvas.height = window.innerHeight - canvas.offsetTop - 10;
   }
@@ -61,6 +62,7 @@
   on:mouseup={setCanvasScreenshot}
   on:mousemove={draw}
   on:mousedown={setPosition}
+  on:resize={resize}
 />
 
 <style>
