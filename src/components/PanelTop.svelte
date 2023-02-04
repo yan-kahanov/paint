@@ -1,5 +1,5 @@
 <script>
-  export let settings = {};
+  import settings from '../settings'
 </script>
 
 <div class="panel-top">

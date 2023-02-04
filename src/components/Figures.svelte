@@ -1,22 +1,18 @@
 <script>
-  export let changeFigure = () => {};
-  export let activeFigure = "pen";
+  import settings from '../settings' 
+  import figures from '../figures' 
 
-  const figures = [
-    { value: "pen", title: "Карандаш" },
-    { value: "line", title: "Линия" },
-    { value: "rect", title: "Прямоугльник" },
-    { value: "ellipse", title: "Овал" },
-    { value: "triangle", title: "Треугольник" },
-  ];
+  const changeFigure = (figure) => {
+    settings.figure = figure.value
+  }
 </script>
 
 <div>
   {#each figures as figure}
     <button
       class="figure"
-      class:active={activeFigure === figure.value}
-      on:click={() => changeFigure(figure.value)}
+      class:active={settings.figure === figure.value}
+      on:click={() => changeFigure(figure)}
     >
       {figure.title}
     </button>
