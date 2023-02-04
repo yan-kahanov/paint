@@ -1,6 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import Figures from "./components/Figures.svelte";
+  import PanelTop from "./components/PanelTop.svelte";
   import Toolbar from "./components/Toolbar.svelte";
 
   let canvasScreenshot;
@@ -116,29 +117,8 @@
 
 <main>
   <div>
+    <PanelTop settings={settings}/>
     <Toolbar {ctx} {canvas} setCanvasScreenshot={setCanvasScreenshot}/>
-    <div class="panel-top">
-      <input
-        class="input-line-width"
-        bind:value={settings.lineWidth}
-        type="number"
-        placeholder="Толщина (px)"
-      />
-      <input
-        type="color"
-        class="color-picker"
-        bind:value={settings.strokeColor}
-      />
-      <input
-        type="color"
-        class="color-picker"
-        bind:value={settings.fillColor}
-      />
-      <div class="fill-toggle">
-        <input id="fillToggle" type="checkbox" bind:checked={settings.isFill} />
-        <label for="fillToggle">С заливкой</label>
-      </div>
-    </div>
     <Figures {changeFigure} activeFigure={settings.figure} />
   </div>
   <canvas bind:this={canvas} on:resize={resize} />
@@ -154,28 +134,5 @@
   canvas {
     border: 1px solid gray;
   }
-  .color-picker {
-    padding: 0;
-    cursor: pointer;
-  }
-  .fill-toggle {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  .fill-toggle input,
-  .fill-toggle label {
-    cursor: pointer;
-    margin: 0;
-    user-select: none;
-  }
-  .panel-top {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    margin-bottom: 10px;
-  }
-  .input-line-width {
-    user-select: none;
-  }
+  
 </style>
