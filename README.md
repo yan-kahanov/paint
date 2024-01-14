@@ -1,6 +1,6 @@
 # Demo
 
-https://teffican.github.io/paint/
+https://yan-kakhanov.github.io/paint/
 
 ## Stack
 
