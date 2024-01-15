@@ -1,6 +1,6 @@
 # Demo
 
-https://yan-kakhanov.github.io/paint/
+https://yan-kahanov.github.io/paint/
 
 ## Stack
 
